@@ -8,13 +8,27 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let fontTypeArray = ["AppleSDGothicNeo-Thin",
+                         "GillSans-Italic",
+                         "GillSans",
+                         "AvenirNextCondensed-UltraLightItalic",
+                         "Noteworthy-Light",
+                         "Chalkduster",
+                         "Farah",
+                         "PartyLetPlain"]
+    
+    let numberOfLinesArray = [0, 1, 2, 3, 4]
+    let textColorArray = ["red", "blue", "systemPink", "systemGray", "brown", "darkGray"]
+    let textUIColorArray = [UIColor.red, .blue, .systemPink, .systemGray, .brown, .darkGray]
 
     @IBOutlet weak var alignmentSegmentedControll: UISegmentedControl!
     @IBOutlet weak var mainLabelOutlet: UILabel!
+    
     @IBOutlet weak var FontTypePicker: UIPickerView!
     @IBOutlet weak var numberOflinesPicjer: UIPickerView!
-
     @IBOutlet weak var fontColorPicker: UIPickerView!
+    
     @IBOutlet weak var fontSizeSLider: UISlider!
     
     @IBOutlet weak var shadowSwitch: UISwitch!
@@ -22,6 +36,16 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        alignmentSegmentedControll.addTarget(self, action: #selector(setAlignment), for: .valueChanged)
+        
+        
+        fontColorPicker.dataSource = self
+        fontColorPicker.delegate = self
+        FontTypePicker.dataSource = self
+        FontTypePicker.delegate = self
+        numberOflinesPicjer.dataSource = self
+        numberOflinesPicjer.delegate = self
+        
         
     }
 
@@ -43,12 +67,59 @@ class ViewController: UIViewController {
         self.present(addTextAlert, animated: true)
     }
     
-    @IBAction func alignmentSegmentedControllAction(_ sender: Any) {
+    @IBAction func fontSizeSliderAction(_ sender: UISlider) {
+        let fontSixe = Int(fontSizeSLider.value)
+        mainLabelOutlet.font = UIFont.boldSystemFont(ofSize: CGFloat(fontSixe))
     }
     
-    @IBAction func fontSizeSliderAction(_ sender: UISlider) {
-    }
     @IBAction func shadowSwitchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            mainLabelOutlet.shadowColor = .red
+        mainLabelOutlet.shadowOffset = CGSize(width: 3, height: 3)
+        } else {
+            mainLabelOutlet.shadowOffset = CGSize(width: 0, height: 0)
+
+        }
+    }
+    
+    
+    
+    @objc func setAlignment (target: UISegmentedControl) {
+        
+        switch target.selectedSegmentIndex {
+        case 0 : mainLabelOutlet.textAlignment = .left
+        case 1 : mainLabelOutlet.textAlignment = .center
+        case 2 : mainLabelOutlet.textAlignment = .right
+        default: return
+        }
     }
 }
 
+
+
+extension ViewController : UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch pickerView.tag {
+        case 1 : return 8
+        case 2 : return 6
+        case 3 : return 5
+        default: return 0
+        }
+    }
+}
+
+extension ViewController : UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch pickerView.tag {
+        case 1 : return fontTypeArray [row]
+            mainLabelOutlet.font = UIFont(name: fontTypeArray [row], size: CGFloat(fontSizeSLider.value))
+        case 2 : return textColorArray [row]
+        case 3 : return "\(numberOfLinesArray [row])"
+        default: return "error"
+        }
+    }
+}
