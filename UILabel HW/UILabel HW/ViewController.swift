@@ -68,17 +68,22 @@ class ViewController: UIViewController {
     }
     
     @IBAction func fontSizeSliderAction(_ sender: UISlider) {
-        let fontSixe = Int(fontSizeSLider.value)
-        mainLabelOutlet.font = UIFont.boldSystemFont(ofSize: CGFloat(fontSixe))
+        
+        let fontSize = Int(fontSizeSLider.value)
+        mainLabelOutlet.font = UIFont(name: mainLabelOutlet.font.fontName, size: CGFloat(fontSize))
+        
     }
     
     @IBAction func shadowSwitchAction(_ sender: UISwitch) {
+        
         if sender.isOn {
+            
             mainLabelOutlet.shadowColor = .red
         mainLabelOutlet.shadowOffset = CGSize(width: 3, height: 3)
+            
         } else {
+            
             mainLabelOutlet.shadowOffset = CGSize(width: 0, height: 0)
-
         }
     }
     
@@ -115,10 +120,16 @@ extension ViewController : UIPickerViewDataSource {
 extension ViewController : UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerView.tag {
-        case 1 : return fontTypeArray [row]
+        case 1 :
             mainLabelOutlet.font = UIFont(name: fontTypeArray [row], size: CGFloat(fontSizeSLider.value))
-        case 2 : return textColorArray [row]
-        case 3 : return "\(numberOfLinesArray [row])"
+            return fontTypeArray [row]
+        case 2 :
+            mainLabelOutlet.textColor = UIColor(named: "\(textColorArray[row])")
+            print("\(textColorArray[row])")
+            return textColorArray [row]
+        case 3 :
+            mainLabelOutlet.numberOfLines = row
+            return "\(numberOfLinesArray [row])"
         default: return "error"
         }
     }
