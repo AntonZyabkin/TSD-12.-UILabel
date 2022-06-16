@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     let numberOfLinesArray = [0, 1, 2, 3, 4]
     let textColorArray = ["red", "blue", "systemPink", "systemGray", "brown", "darkGray"]
+
     let textUIColorArray = [UIColor.red, .blue, .systemPink, .systemGray, .brown, .darkGray]
 
     @IBOutlet weak var alignmentSegmentedControll: UISegmentedControl!
@@ -45,7 +46,7 @@ class ViewController: UIViewController {
         FontTypePicker.delegate = self
         numberOflinesPicjer.dataSource = self
         numberOflinesPicjer.delegate = self
-        
+        mainLabelOutlet.textColor = UIColor(named: "." + "red")
         
     }
 
@@ -124,8 +125,7 @@ extension ViewController : UIPickerViewDelegate {
             mainLabelOutlet.font = UIFont(name: fontTypeArray [row], size: CGFloat(fontSizeSLider.value))
             return fontTypeArray [row]
         case 2 :
-            mainLabelOutlet.textColor = UIColor(named: "\(textColorArray[row])")
-            print("\(textColorArray[row])")
+            mainLabelOutlet.textColor = textUIColorArray[row]
             return textColorArray [row]
         case 3 :
             mainLabelOutlet.numberOfLines = row
